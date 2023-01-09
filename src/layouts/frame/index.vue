@@ -6,20 +6,20 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, unref, computed } from 'vue';
-import FrameContent from '../components/FrameContent.vue';
+import { defineComponent, unref, computed } from 'vue'
+import FrameContent from '../components/FrameContent.vue'
 
-import { useFrameKeepAlive } from './useFrameKeepAlive';
+import { useFrameKeepAlive } from './useFrameKeepAlive'
 
 export default defineComponent({
   name: 'FrameLayout',
   components: { FrameContent },
   setup() {
-    const { getFramePages, hasRenderFrame, showIframe } = useFrameKeepAlive();
+    const { getFramePages, hasRenderFrame, showIframe } = useFrameKeepAlive()
 
-    const showFrame = computed(() => unref(getFramePages).length > 0);
+    const showFrame = computed(() => unref(getFramePages).length > 0)
 
-    return { getFramePages, hasRenderFrame, showIframe, showFrame };
-  },
-});
+    return { getFramePages, hasRenderFrame, showIframe, showFrame }
+  }
+})
 </script>

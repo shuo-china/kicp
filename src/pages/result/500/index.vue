@@ -5,9 +5,9 @@
 </template>
 <script lang="ts">
 export default {
-  name: 'Result500',
-};
+  name: 'Result500'
+}
 </script>
 <script setup lang="ts">
-import Result from '@/components/result/index.vue';
+import Result from '@/components/result/index.vue'
 </script>

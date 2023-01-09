@@ -1,34 +1,35 @@
-import { ConfigEnv, UserConfig, loadEnv } from 'vite';
-import { viteMockServe } from 'vite-plugin-mock';
-import createVuePlugin from '@vitejs/plugin-vue';
-import vueJsx from '@vitejs/plugin-vue-jsx';
-import svgLoader from 'vite-svg-loader';
+import type { ConfigEnv, UserConfig } from 'vite'
+import { loadEnv } from 'vite'
+import { viteMockServe } from 'vite-plugin-mock'
+import createVuePlugin from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import svgLoader from 'vite-svg-loader'
 
-import path from 'path';
+import path from 'path'
 
-const CWD = process.cwd();
+const CWD = process.cwd()
 
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv): UserConfig => {
-  const { VITE_BASE_URL } = loadEnv(mode, CWD);
+  const { VITE_BASE_URL } = loadEnv(mode, CWD)
   return {
     base: VITE_BASE_URL,
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'),
-      },
+        '@': path.resolve(__dirname, './src')
+      }
     },
 
     css: {
       preprocessorOptions: {
         less: {
           modifyVars: {
-            hack: `true; @import (reference) "${path.resolve('src/style/variables.less')}";`,
+            hack: `true; @import (reference) "${path.resolve('src/style/variables.less')}";`
           },
           math: 'strict',
-          javascriptEnabled: true,
-        },
-      },
+          javascriptEnabled: true
+        }
+      }
     },
 
     plugins: [
@@ -36,17 +37,17 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       vueJsx(),
       viteMockServe({
         mockPath: 'mock',
-        localEnabled: true,
+        localEnabled: true
       }),
-      svgLoader(),
+      svgLoader()
     ],
 
     server: {
       port: 3002,
       host: '0.0.0.0',
       proxy: {
-        '/api': 'http://127.0.0.1:3000/',
-      },
-    },
-  };
-};
+        '/api': 'http://127.0.0.1:3000/'
+      }
+    }
+  }
+}

@@ -71,54 +71,55 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { MessagePlugin, FormRule } from 'tdesign-vue-next';
-import { useCounter } from '@/hooks';
+import { ref } from 'vue'
+import type { FormRule } from 'tdesign-vue-next'
+import { MessagePlugin } from 'tdesign-vue-next'
+import { useCounter } from '@/hooks'
 
 const INITIAL_DATA = {
   phone: '',
   email: '',
   password: '',
   verifyCode: '',
-  checked: false,
-};
+  checked: false
+}
 
 const FORM_RULES: Record<string, FormRule[]> = {
   phone: [{ required: true, message: '手机号必填', type: 'error' }],
   email: [
     { required: true, message: '邮箱必填', type: 'error' },
-    { email: true, message: '请输入正确的邮箱', type: 'warning' },
+    { email: true, message: '请输入正确的邮箱', type: 'warning' }
   ],
   password: [{ required: true, message: '密码必填', type: 'error' }],
-  verifyCode: [{ required: true, message: '验证码必填', type: 'error' }],
-};
+  verifyCode: [{ required: true, message: '验证码必填', type: 'error' }]
+}
 
-const type = ref('phone');
+const type = ref('phone')
 
-const form = ref();
-const formData = ref({ ...INITIAL_DATA });
+const form = ref()
+const formData = ref({ ...INITIAL_DATA })
 
-const showPsw = ref(false);
+const showPsw = ref(false)
 
-const [countDown, handleCounter] = useCounter();
+const [countDown, handleCounter] = useCounter()
 
-const emit = defineEmits(['registerSuccess']);
+const emit = defineEmits(['registerSuccess'])
 
 const onSubmit = ({ validateResult }) => {
   if (validateResult === true) {
     if (!formData.value.checked) {
-      MessagePlugin.error('请同意TDesign服务协议和TDesign 隐私声明');
-      return;
+      MessagePlugin.error('请同意TDesign服务协议和TDesign 隐私声明')
+      return
     }
-    MessagePlugin.success('注册成功');
-    emit('registerSuccess');
+    MessagePlugin.success('注册成功')
+    emit('registerSuccess')
   }
-};
+}
 
-const switchType = (val) => {
-  form.value.reset();
-  type.value = val;
-};
+const switchType = val => {
+  form.value.reset()
+  type.value = val
+}
 </script>
 
 <style lang="less" scoped>

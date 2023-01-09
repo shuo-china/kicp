@@ -1,4 +1,4 @@
-import { FormRule } from 'tdesign-vue-next';
+import type { FormRule } from 'tdesign-vue-next'
 
 export const FORM_RULES: Record<string, FormRule[]> = {
   name: [{ required: true, message: '请选择合同名称', type: 'error' }],
@@ -8,20 +8,20 @@ export const FORM_RULES: Record<string, FormRule[]> = {
   consignee: [{ required: true, message: '请输入收货人', type: 'error' }],
   mobileNum: [{ required: true, message: '请输入手机号码', type: 'error' }],
   deliveryAddress: [{ required: true, message: '请选择收货地址', type: 'error' }],
-  fullAddress: [{ required: true, message: '请输入详细地址', type: 'error' }],
-};
+  fullAddress: [{ required: true, message: '请输入详细地址', type: 'error' }]
+}
 
 export const NAME_OPTIONS = [
   { label: '合同A', value: '1' },
   { label: '合同B', value: '2' },
-  { label: '合同C', value: '3' },
-];
+  { label: '合同C', value: '3' }
+]
 
 export const TYPE_OPTIONS = [
   { label: '类型A', value: '1' },
   { label: '类型B', value: '2' },
-  { label: '类型C', value: '3' },
-];
+  { label: '类型C', value: '3' }
+]
 
 export const ADDRESS_OPTIONS = [
   { label: '广东省深圳市南山区', value: '1' },
@@ -29,13 +29,13 @@ export const ADDRESS_OPTIONS = [
   { label: '上海市徐汇区', value: '3' },
   { label: '四川省成都市高新区', value: '4' },
   { label: '广东省广州市天河区', value: '5' },
-  { label: '陕西省西安市高新区', value: '6' },
-];
+  { label: '陕西省西安市高新区', value: '6' }
+]
 
 export const INITIAL_DATA1 = {
   name: '',
-  type: '',
-};
+  type: ''
+}
 
 export const INITIAL_DATA2 = {
   title: '',
@@ -44,12 +44,12 @@ export const INITIAL_DATA2 = {
   bank: '',
   bankAccount: '',
   email: '',
-  tel: '',
-};
+  tel: ''
+}
 
 export const INITIAL_DATA3 = {
   consignee: '',
   mobileNum: '',
   deliveryAddress: '',
-  fullAddress: '',
-};
+  fullAddress: ''
+}

@@ -21,30 +21,30 @@
   </span>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps({
   type: String,
   describe: [String, Number],
   isReverseColor: {
     type: Boolean,
-    default: false,
-  },
-});
+    default: false
+  }
+})
 
 const containerCls = computed(() => {
-  const { isReverseColor, type } = props;
+  const { isReverseColor, type } = props
   return [
     'trend-container',
     {
       'trend-container__reverse': isReverseColor,
       'trend-container__up': !isReverseColor && type === 'up',
-      'trend-container__down': !isReverseColor && type === 'down',
-    },
-  ];
-});
+      'trend-container__down': !isReverseColor && type === 'down'
+    }
+  ]
+})
 
-const iconCls = computed(() => ['trend-icon-container']);
+const iconCls = computed(() => ['trend-icon-container'])
 </script>
 
 <style lang="less" scoped>

@@ -24,21 +24,21 @@
 </template>
 <script lang="ts">
 export default {
-  name: 'LoginIndex',
-};
+  name: 'LoginIndex'
+}
 </script>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-import Login from './components/Login.vue';
-import Register from './components/Register.vue';
-import LoginHeader from './components/Header.vue';
-import TdesignSetting from '@/layouts/setting.vue';
+import Login from './components/Login.vue'
+import Register from './components/Register.vue'
+import LoginHeader from './components/Header.vue'
+import TdesignSetting from '@/layouts/setting.vue'
 
-const type = ref('login');
+const type = ref('login')
 const switchType = (val: string) => {
-  type.value = val;
-};
+  type.value = val
+}
 </script>
 
 <style lang="less" scoped>

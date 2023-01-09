@@ -20,12 +20,12 @@
 </template>
 <script lang="ts">
 export default {
-  name: 'ResultBrowserIncompatible',
-};
+  name: 'ResultBrowserIncompatible'
+}
 </script>
 <script setup lang="ts">
-import Result from '@/components/result/index.vue';
-import Thumbnail from '@/components/thumbnail/index.vue';
+import Result from '@/components/result/index.vue'
+import Thumbnail from '@/components/thumbnail/index.vue'
 </script>
 
 <style lang="less" scoped>

@@ -113,22 +113,23 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { MessagePlugin, PrimaryTableCol, TableRowData, PageInfo } from 'tdesign-vue-next';
-import Trend from '@/components/trend/index.vue';
-import { getList } from '@/api/list';
-import { useSettingStore } from '@/store';
-import { prefix } from '@/config/global';
+import { ref, computed, onMounted } from 'vue'
+import type { PrimaryTableCol, TableRowData, PageInfo } from 'tdesign-vue-next'
+import { MessagePlugin } from 'tdesign-vue-next'
+import Trend from '@/components/trend/index.vue'
+import { getList } from '@/api/list'
+import { useSettingStore } from '@/store'
+import { prefix } from '@/config/global'
 
 import {
   CONTRACT_STATUS,
   CONTRACT_STATUS_OPTIONS,
   CONTRACT_TYPES,
   CONTRACT_TYPE_OPTIONS,
-  CONTRACT_PAYMENT_TYPES,
-} from '@/constants';
+  CONTRACT_PAYMENT_TYPES
+} from '@/constants'
 
-const store = useSettingStore();
+const store = useSettingStore()
 
 const COLUMNS: PrimaryTableCol<TableRowData>[] = [
   {
@@ -137,137 +138,137 @@ const COLUMNS: PrimaryTableCol<TableRowData>[] = [
     width: 200,
     ellipsis: true,
     align: 'left',
-    colKey: 'name',
+    colKey: 'name'
   },
   { title: '合同状态', colKey: 'status', width: 200 },
   {
     title: '合同编号',
     width: 200,
     ellipsis: true,
-    colKey: 'no',
+    colKey: 'no'
   },
   {
     title: '合同类型',
     width: 200,
     ellipsis: true,
-    colKey: 'contractType',
+    colKey: 'contractType'
   },
   {
     title: '合同收付类型',
     width: 200,
     ellipsis: true,
-    colKey: 'paymentType',
+    colKey: 'paymentType'
   },
   {
     title: '合同金额 (元)',
     width: 200,
     ellipsis: true,
-    colKey: 'amount',
+    colKey: 'amount'
   },
   {
     align: 'left',
     fixed: 'right',
     width: 200,
     colKey: 'op',
-    title: '操作',
-  },
-];
+    title: '操作'
+  }
+]
 
 const searchForm = {
   name: '',
   no: undefined,
   status: undefined,
-  type: '',
-};
+  type: ''
+}
 
-const formData = ref({ ...searchForm });
-const rowKey = 'index';
-const verticalAlign = 'top' as const;
-const hover = true;
+const formData = ref({ ...searchForm })
+const rowKey = 'index'
+const verticalAlign = 'top' as const
+const hover = true
 
 const pagination = ref({
   defaultPageSize: 20,
   total: 100,
-  defaultCurrent: 1,
-});
-const confirmVisible = ref(false);
+  defaultCurrent: 1
+})
+const confirmVisible = ref(false)
 
-const data = ref([]);
+const data = ref([])
 
-const dataLoading = ref(false);
+const dataLoading = ref(false)
 const fetchData = async () => {
-  dataLoading.value = true;
+  dataLoading.value = true
   try {
-    const { list } = await getList();
-    data.value = list;
+    const { list } = await getList()
+    data.value = list
     pagination.value = {
       ...pagination.value,
-      total: list.length,
-    };
+      total: list.length
+    }
   } catch (e) {
-    console.log(e);
+    console.log(e)
   } finally {
-    dataLoading.value = false;
+    dataLoading.value = false
   }
-};
+}
 
-const deleteIdx = ref(-1);
+const deleteIdx = ref(-1)
 const confirmBody = computed(() => {
   if (deleteIdx.value > -1) {
-    const { name } = data.value[deleteIdx.value];
-    return `删除后，${name}的所有合同信息将被清空，且无法恢复`;
+    const { name } = data.value[deleteIdx.value]
+    return `删除后，${name}的所有合同信息将被清空，且无法恢复`
   }
-  return '';
-});
+  return ''
+})
 
 const resetIdx = () => {
-  deleteIdx.value = -1;
-};
+  deleteIdx.value = -1
+}
 
 const onConfirmDelete = () => {
   // 真实业务请发起请求
-  data.value.splice(deleteIdx.value, 1);
-  pagination.value.total = data.value.length;
-  confirmVisible.value = false;
-  MessagePlugin.success('删除成功');
-  resetIdx();
-};
+  data.value.splice(deleteIdx.value, 1)
+  pagination.value.total = data.value.length
+  confirmVisible.value = false
+  MessagePlugin.success('删除成功')
+  resetIdx()
+}
 
 const onCancel = () => {
-  resetIdx();
-};
+  resetIdx()
+}
 
 onMounted(() => {
-  fetchData();
-});
+  fetchData()
+})
 
 const handleClickDelete = ({ row }) => {
-  deleteIdx.value = row.rowIndex;
-  confirmVisible.value = true;
-};
-const onReset = (val) => {
-  console.log(val);
-};
-const onSubmit = (val) => {
-  console.log(val);
-};
+  deleteIdx.value = row.rowIndex
+  confirmVisible.value = true
+}
+const onReset = val => {
+  console.log(val)
+}
+const onSubmit = val => {
+  console.log(val)
+}
 const rehandlePageChange = (pageInfo: PageInfo, newDataSource: TableRowData[]) => {
-  console.log('分页变化', pageInfo, newDataSource);
-};
+  console.log('分页变化', pageInfo, newDataSource)
+}
 const rehandleChange = (changeParams, triggerAndData) => {
-  console.log('统一Change', changeParams, triggerAndData);
-};
+  console.log('统一Change', changeParams, triggerAndData)
+}
 const rehandleClickOp = ({ text, row }) => {
-  console.log(text, row);
-};
+  console.log(text, row)
+}
 
 const headerAffixedTop = computed(
   () =>
     ({
       offsetTop: store.isUseTabsRouter ? 48 : 0,
-      container: `.${prefix}-layout`,
-    } as any), // TO BE FIXED
-);
+      container: `.${prefix}-layout`
+    } as any) // TO BE FIXED
+)
 </script>
 
 <style lang="less" scoped>

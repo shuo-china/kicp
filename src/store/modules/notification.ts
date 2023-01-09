@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import type { NotificationItem } from '@/types/interface';
+import { defineStore } from 'pinia'
+import type { NotificationItem } from '@/types/interface'
 
 const msgData = [
   {
@@ -9,7 +9,7 @@ const msgData = [
     status: true,
     collected: false,
     date: '2021-01-01 08:00',
-    quality: 'high',
+    quality: 'high'
   },
   {
     id: '124',
@@ -18,7 +18,7 @@ const msgData = [
     status: true,
     collected: false,
     date: '2021-01-01 08:00',
-    quality: 'low',
+    quality: 'low'
   },
   {
     id: '125',
@@ -27,7 +27,7 @@ const msgData = [
     status: true,
     collected: false,
     date: '2021-01-01 08:00',
-    quality: 'middle',
+    quality: 'middle'
   },
   {
     id: '126',
@@ -36,7 +36,7 @@ const msgData = [
     status: true,
     collected: false,
     date: '2021-01-01 08:00',
-    quality: 'low',
+    quality: 'low'
   },
   {
     id: '127',
@@ -45,7 +45,7 @@ const msgData = [
     status: true,
     collected: false,
     date: '2021-01-01 08:00',
-    quality: 'low',
+    quality: 'low'
   },
   {
     id: '128',
@@ -54,24 +54,24 @@ const msgData = [
     status: true,
     collected: false,
     date: '2021-01-01 08:00',
-    quality: 'low',
-  },
-];
+    quality: 'low'
+  }
+]
 
-type MsgDataType = typeof msgData;
+type MsgDataType = typeof msgData
 
 export const useNotificationStore = defineStore('notification', {
   state: () => ({
-    msgData,
+    msgData
   }),
   getters: {
-    unreadMsg: (state) => state.msgData.filter((item: NotificationItem) => item.status),
-    readMsg: (state) => state.msgData.filter((item: NotificationItem) => !item.status),
+    unreadMsg: state => state.msgData.filter((item: NotificationItem) => item.status),
+    readMsg: state => state.msgData.filter((item: NotificationItem) => !item.status)
   },
   actions: {
     setMsgData(data: MsgDataType) {
-      this.msgData = data;
-    },
+      this.msgData = data
+    }
   },
-  persist: true,
-});
+  persist: true
+})

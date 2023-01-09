@@ -29,7 +29,7 @@
         :data="formData1"
         :rules="FORM_RULES"
         label-align="right"
-        @submit="(result) => onSubmit(result, 1)"
+        @submit="result => onSubmit(result, 1)"
       >
         <t-form-item label="合同名称" name="name">
           <t-select v-model="formData1.name" :style="{ width: '480px' }" class="demo-select-base" clearable>
@@ -59,7 +59,7 @@
         :rules="FORM_RULES"
         label-align="left"
         @reset="onReset(0)"
-        @submit="(result) => onSubmit(result, 2)"
+        @submit="result => onSubmit(result, 2)"
       >
         <t-form-item label="发票抬头" name="title">
           <t-input v-model="formData2.title" :style="{ width: '480px' }" placeholder="请输入发票抬头" />
@@ -96,7 +96,7 @@
         :rules="FORM_RULES"
         label-align="left"
         @reset="onReset(1)"
-        @submit="(result) => onSubmit(result, 6)"
+        @submit="result => onSubmit(result, 6)"
       >
         <t-form-item label="收货人" name="consignee">
           <t-input v-model="formData3.consignee" :style="{ width: '480px' }" placeholder="请输入收货人" />
@@ -142,14 +142,14 @@
 
 <script lang="ts">
 export default {
-  name: 'FormStep',
-};
+  name: 'FormStep'
+}
 </script>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { SubmitContext, Data } from 'tdesign-vue-next';
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import type { SubmitContext, Data } from 'tdesign-vue-next'
 
 import {
   FORM_RULES,
@@ -158,39 +158,39 @@ import {
   ADDRESS_OPTIONS,
   INITIAL_DATA1,
   INITIAL_DATA2,
-  INITIAL_DATA3,
-} from './constants';
+  INITIAL_DATA3
+} from './constants'
 
-const formData1 = ref({ ...INITIAL_DATA1 });
-const formData2 = ref({ ...INITIAL_DATA2 });
-const formData3 = ref({ ...INITIAL_DATA3 });
-const activeForm = ref(0);
+const formData1 = ref({ ...INITIAL_DATA1 })
+const formData2 = ref({ ...INITIAL_DATA2 })
+const formData3 = ref({ ...INITIAL_DATA3 })
+const activeForm = ref(0)
 
 const amount = computed(() => {
   if (formData1.value.name === '1') {
-    return '565421';
+    return '565421'
   }
   if (formData1.value.name === '2') {
-    return '278821';
+    return '278821'
   }
   if (formData1.value.name === '3') {
-    return '109824';
+    return '109824'
   }
-  return '--';
-});
+  return '--'
+})
 
 const onSubmit = (result: SubmitContext<Data>, val: number) => {
   if (result.validateResult === true) {
-    activeForm.value = val;
+    activeForm.value = val
   }
-};
+}
 const onReset = (val: number) => {
-  activeForm.value = val;
-};
+  activeForm.value = val
+}
 const complete = () => {
-  const router = useRouter();
-  router.replace({ path: '/detail/advanced' });
-};
+  const router = useRouter()
+  router.replace({ path: '/detail/advanced' })
+}
 </script>
 
 <style lang="less" scoped>

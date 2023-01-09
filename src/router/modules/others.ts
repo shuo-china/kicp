@@ -1,5 +1,5 @@
-import Layout from '@/layouts/index.vue';
-import LogoutIcon from '@/assets/assets-slide-logout.svg';
+import Layout from '@/layouts/index.vue'
+import LogoutIcon from '@/assets/assets-slide-logout.svg'
 
 export default [
   {
@@ -13,9 +13,9 @@ export default [
         path: 'index',
         name: 'UserIndex',
         component: () => import('@/pages/user/index.vue'),
-        meta: { title: '个人中心' },
-      },
-    ],
+        meta: { title: '个人中心' }
+      }
+    ]
   },
   {
     path: '/loginRedirect',
@@ -28,8 +28,8 @@ export default [
         path: 'index',
         redirect: '/login',
         component: () => import('@/layouts/blank.vue'),
-        meta: { title: '登录中心' },
-      },
-    ],
-  },
-];
+        meta: { title: '登录中心' }
+      }
+    ]
+  }
+]

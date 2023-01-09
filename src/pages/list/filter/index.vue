@@ -3,9 +3,9 @@
 </template>
 <script lang="ts">
 export default {
-  name: 'ListFilter',
-};
+  name: 'ListFilter'
+}
 </script>
 <script setup lang="ts">
-import CommonTable from '../components/CommonTable.vue';
+import CommonTable from '../components/CommonTable.vue'
 </script>

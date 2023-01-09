@@ -16,23 +16,23 @@
 </template>
 
 <script setup lang="ts">
-import LogoFullIcon from '@/assets/assets-logo-full.svg?component';
-import { useSettingStore } from '@/store';
+import LogoFullIcon from '@/assets/assets-logo-full.svg?component'
+import { useSettingStore } from '@/store'
 
-const settingStore = useSettingStore();
+const settingStore = useSettingStore()
 const toggleSettingPanel = () => {
   settingStore.updateConfig({
-    showSettingPanel: true,
-  });
-};
+    showSettingPanel: true
+  })
+}
 
 const navToGitHub = () => {
-  window.open('https://github.com/tencent/tdesign-vue-next-starter');
-};
+  window.open('https://github.com/tencent/tdesign-vue-next-starter')
+}
 
 const navToHelper = () => {
-  window.open('http://tdesign.tencent.com/starter/docs/get-started');
-};
+  window.open('http://tdesign.tencent.com/starter/docs/get-started')
+}
 </script>
 
 <style lang="less" scoped>

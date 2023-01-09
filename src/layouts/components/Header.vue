@@ -64,99 +64,99 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { PropType } from 'vue';
-import { useRouter } from 'vue-router';
-import { useSettingStore } from '@/store';
-import { getActive } from '@/router';
-import { prefix } from '@/config/global';
-import LogoFull from '@/assets/assets-logo-full.svg?component';
-import type { MenuRoute } from '@/types/interface';
+import { computed } from 'vue'
+import type { PropType } from 'vue'
+import { useRouter } from 'vue-router'
+import { useSettingStore } from '@/store'
+import { getActive } from '@/router'
+import { prefix } from '@/config/global'
+import LogoFull from '@/assets/assets-logo-full.svg?component'
+import type { MenuRoute } from '@/types/interface'
 
-import Notice from './Notice.vue';
-import Search from './Search.vue';
-import MenuContent from './MenuContent.vue';
+import Notice from './Notice.vue'
+import Search from './Search.vue'
+import MenuContent from './MenuContent.vue'
 
 const props = defineProps({
   theme: {
     type: String,
-    default: '',
+    default: ''
   },
   layout: {
     type: String,
-    default: 'top',
+    default: 'top'
   },
   showLogo: {
     type: Boolean,
-    default: true,
+    default: true
   },
   menu: {
     type: Array as PropType<MenuRoute[]>,
-    default: () => [],
+    default: () => []
   },
   isFixed: {
     type: Boolean,
-    default: false,
+    default: false
   },
   isCompact: {
     type: Boolean,
-    default: false,
+    default: false
   },
   maxLevel: {
     type: Number,
-    default: 3,
-  },
-});
+    default: 3
+  }
+})
 
-const router = useRouter();
-const settingStore = useSettingStore();
+const router = useRouter()
+const settingStore = useSettingStore()
 
 const toggleSettingPanel = () => {
   settingStore.updateConfig({
-    showSettingPanel: true,
-  });
-};
+    showSettingPanel: true
+  })
+}
 
-const active = computed(() => getActive());
+const active = computed(() => getActive())
 
-const layoutCls = computed(() => [`${prefix}-header-layout`]);
+const layoutCls = computed(() => [`${prefix}-header-layout`])
 
 const menuCls = computed(() => {
-  const { isFixed, layout, isCompact } = props;
+  const { isFixed, layout, isCompact } = props
   return [
     {
       [`${prefix}-header-menu`]: !isFixed,
       [`${prefix}-header-menu-fixed`]: isFixed,
       [`${prefix}-header-menu-fixed-side`]: layout === 'side' && isFixed,
-      [`${prefix}-header-menu-fixed-side-compact`]: layout === 'side' && isFixed && isCompact,
-    },
-  ];
-});
+      [`${prefix}-header-menu-fixed-side-compact`]: layout === 'side' && isFixed && isCompact
+    }
+  ]
+})
 
 const changeCollapsed = () => {
   settingStore.updateConfig({
-    isSidebarCompact: !settingStore.isSidebarCompact,
-  });
-};
+    isSidebarCompact: !settingStore.isSidebarCompact
+  })
+}
 
-const handleNav = (url) => {
-  router.push(url);
-};
+const handleNav = url => {
+  router.push(url)
+}
 
 const handleLogout = () => {
   router.push({
     path: '/login',
-    query: { redirect: encodeURIComponent(router.currentRoute.value.fullPath) },
-  });
-};
+    query: { redirect: encodeURIComponent(router.currentRoute.value.fullPath) }
+  })
+}
 
 const navToGitHub = () => {
-  window.open('https://github.com/tencent/tdesign-vue-next-starter');
-};
+  window.open('https://github.com/tencent/tdesign-vue-next-starter')
+}
 
 const navToHelper = () => {
-  window.open('http://tdesign.tencent.com/starter/docs/get-started');
-};
+  window.open('http://tdesign.tencent.com/starter/docs/get-started')
+}
 </script>
 <style lang="less" scoped>
 .@{starter-prefix}-header {

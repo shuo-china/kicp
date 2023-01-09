@@ -1,73 +1,73 @@
-import { MessagePlugin } from 'tdesign-vue-next';
-import NProgress from 'nprogress'; // progress bar
-import 'nprogress/nprogress.css'; // progress bar style
+import { MessagePlugin } from 'tdesign-vue-next'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
 
-import { getPermissionStore, getUserStore } from '@/store';
-import router from '@/router';
+import { getPermissionStore, getUserStore } from '@/store'
+import router from '@/router'
 
-NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: false })
 
 router.beforeEach(async (to, from, next) => {
-  NProgress.start();
+  NProgress.start()
 
-  const userStore = getUserStore();
-  const permissionStore = getPermissionStore();
-  const { whiteListRouters } = permissionStore;
+  const userStore = getUserStore()
+  const permissionStore = getPermissionStore()
+  const { whiteListRouters } = permissionStore
 
-  const { token } = userStore;
+  const { token } = userStore
   if (token) {
     if (to.path === '/login') {
-      next();
-      return;
+      next()
+      return
     }
 
-    const { roles } = userStore;
+    const { roles } = userStore
 
     if (roles && roles.length > 0) {
-      next();
+      next()
     } else {
       try {
-        await userStore.getUserInfo();
+        await userStore.getUserInfo()
 
-        const { roles } = userStore;
+        const { roles } = userStore
 
-        await permissionStore.initRoutes(roles);
+        await permissionStore.initRoutes(roles)
 
         if (router.hasRoute(to.name)) {
-          next();
+          next()
         } else {
-          next(`/`);
+          next(`/`)
         }
       } catch (error) {
-        MessagePlugin.error(error);
+        MessagePlugin.error(error)
         next({
           path: '/login',
-          query: { redirect: encodeURIComponent(to.fullPath) },
-        });
-        NProgress.done();
+          query: { redirect: encodeURIComponent(to.fullPath) }
+        })
+        NProgress.done()
       }
     }
   } else {
     /* white list router */
     if (whiteListRouters.indexOf(to.path) !== -1) {
-      next();
+      next()
     } else {
       next({
         path: '/login',
-        query: { redirect: encodeURIComponent(to.fullPath) },
-      });
+        query: { redirect: encodeURIComponent(to.fullPath) }
+      })
     }
-    NProgress.done();
+    NProgress.done()
   }
-});
+})
 
-router.afterEach((to) => {
+router.afterEach(to => {
   if (to.path === '/login') {
-    const userStore = getUserStore();
-    const permissionStore = getPermissionStore();
+    const userStore = getUserStore()
+    const permissionStore = getPermissionStore()
 
-    userStore.logout();
-    permissionStore.restore();
+    userStore.logout()
+    permissionStore.restore()
   }
-  NProgress.done();
-});
+  NProgress.done()
+})

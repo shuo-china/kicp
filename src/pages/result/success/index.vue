@@ -11,8 +11,8 @@
 </template>
 <script lang="ts">
 export default {
-  name: 'ResultSuccess',
-};
+  name: 'ResultSuccess'
+}
 </script>
 <style lang="less" scoped>
 .result-success {

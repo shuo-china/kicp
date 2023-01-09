@@ -79,72 +79,72 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import QrcodeVue from 'qrcode.vue';
-import { MessagePlugin } from 'tdesign-vue-next';
-import type { FormInstanceFunctions, FormRule } from 'tdesign-vue-next';
-import { useCounter } from '@/hooks';
-import { useUserStore } from '@/store';
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import QrcodeVue from 'qrcode.vue'
+import { MessagePlugin } from 'tdesign-vue-next'
+import type { FormInstanceFunctions, FormRule } from 'tdesign-vue-next'
+import { useCounter } from '@/hooks'
+import { useUserStore } from '@/store'
 
-const userStore = useUserStore();
+const userStore = useUserStore()
 
 const INITIAL_DATA = {
   phone: '',
   account: 'admin',
   password: 'admin',
   verifyCode: '',
-  checked: false,
-};
+  checked: false
+}
 
 const FORM_RULES: Record<string, FormRule[]> = {
   phone: [{ required: true, message: '手机号必填', type: 'error' }],
   account: [{ required: true, message: '账号必填', type: 'error' }],
   password: [{ required: true, message: '密码必填', type: 'error' }],
-  verifyCode: [{ required: true, message: '验证码必填', type: 'error' }],
-};
+  verifyCode: [{ required: true, message: '验证码必填', type: 'error' }]
+}
 
-const type = ref('password');
+const type = ref('password')
 
-const form = ref<FormInstanceFunctions>();
-const formData = ref({ ...INITIAL_DATA });
-const showPsw = ref(false);
+const form = ref<FormInstanceFunctions>()
+const formData = ref({ ...INITIAL_DATA })
+const showPsw = ref(false)
 
-const [countDown, handleCounter] = useCounter();
+const [countDown, handleCounter] = useCounter()
 
 const switchType = (val: string) => {
-  type.value = val;
-};
+  type.value = val
+}
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
 /**
  * 发送验证码
  */
 const sendCode = () => {
-  form.value.validate({ fields: ['phone'] }).then((e) => {
+  form.value.validate({ fields: ['phone'] }).then(e => {
     if (e === true) {
-      handleCounter();
+      handleCounter()
     }
-  });
-};
+  })
+}
 
 const onSubmit = async ({ validateResult }) => {
   if (validateResult === true) {
     try {
-      await userStore.login(formData.value);
+      await userStore.login(formData.value)
 
-      MessagePlugin.success('登陆成功');
-      const redirect = route.query.redirect as string;
-      const redirectUrl = redirect ? decodeURIComponent(redirect) : '/dashboard';
-      router.push(redirectUrl);
+      MessagePlugin.success('登陆成功')
+      const redirect = route.query.redirect as string
+      const redirectUrl = redirect ? decodeURIComponent(redirect) : '/dashboard'
+      router.push(redirectUrl)
     } catch (e) {
-      console.log(e);
-      MessagePlugin.error(e.message);
+      console.log(e)
+      MessagePlugin.error(e.message)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

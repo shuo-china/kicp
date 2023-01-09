@@ -9,9 +9,9 @@
 
 <script lang="ts">
 export default {
-  name: 'ResultNetworkError',
-};
+  name: 'ResultNetworkError'
+}
 </script>
 <script setup lang="ts">
-import Result from '@/components/result/index.vue';
+import Result from '@/components/result/index.vue'
 </script>

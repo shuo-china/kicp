@@ -1,4 +1,4 @@
-import { FormRule } from 'tdesign-vue-next';
+import type { FormRule } from 'tdesign-vue-next'
 
 export const FORM_RULES: Record<string, FormRule[]> = {
   name: [{ required: true, message: '请输入合同名称', type: 'error' }],
@@ -9,8 +9,8 @@ export const FORM_RULES: Record<string, FormRule[]> = {
   partyB: [{ required: true, message: '请选择乙方', type: 'error' }],
   signDate: [{ required: true, message: '请选择日期', type: 'error' }],
   startDate: [{ required: true, message: '请选择日期', type: 'error' }],
-  endDate: [{ required: true, message: '请选择日期', type: 'error' }],
-};
+  endDate: [{ required: true, message: '请选择日期', type: 'error' }]
+}
 
 export const INITIAL_DATA = {
   name: '',
@@ -23,23 +23,23 @@ export const INITIAL_DATA = {
   payment: '1',
   amount: 0,
   comment: '',
-  files: [],
-};
+  files: []
+}
 
 export const TYPE_OPTIONS = [
   { label: '类型A', value: '1' },
   { label: '类型B', value: '2' },
-  { label: '类型C', value: '3' },
-];
+  { label: '类型C', value: '3' }
+]
 
 export const PARTY_A_OPTIONS = [
   { label: '公司A', value: '1' },
   { label: '公司B', value: '2' },
-  { label: '公司C', value: '3' },
-];
+  { label: '公司C', value: '3' }
+]
 
 export const PARTY_B_OPTIONS = [
   { label: '公司A', value: '1' },
   { label: '公司B', value: '2' },
-  { label: '公司C', value: '3' },
-];
+  { label: '公司C', value: '3' }
+]
