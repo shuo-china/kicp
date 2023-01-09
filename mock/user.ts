@@ -1,8 +1,21 @@
 import type { MockMethod } from 'vite-plugin-mock'
+import { send, getToken } from './utils'
 
-const tokens = {
-  admin: 'admin-token',
-  editor: 'editor-token'
+const users = {
+  admin: {
+    token: 'admin-token',
+    info: {
+      nickname: 'Super Admin',
+      roles: ['admin']
+    }
+  },
+  normal: {
+    token: 'normal-token',
+    info: {
+      nickname: 'Normal User',
+      roles: ['normal']
+    }
+  }
 }
 
 export default [
@@ -21,25 +34,40 @@ export default [
         })
       })
 
-      const token = tokens[username]
+      const token = users[username]?.token
 
       if (token) {
-        const result = {
+        send(res, 201, {
           access_token: token,
           token_type: 'Bearer',
           expires_in: 60 * 60 * 24
-        }
-
-        res.statusCode = 201
-        res.end(JSON.stringify(result))
+        })
       } else {
-        const error = {
+        send(res, 403, {
           code: 'LOGIN_FAIL',
           message: '用户名或密码不正确'
-        }
-        res.statusCode = 403
-        res.end(JSON.stringify(error))
+        })
       }
+    }
+  },
+  {
+    url: '/api/getUserInfo',
+    method: 'get',
+    rawResponse: (req, res) => {
+      const token = getToken(req)
+
+      if (token) {
+        const userInfo = Object.values(users).find(i => i.token === token)?.info
+        if (userInfo) {
+          send(res, 200, userInfo)
+          return
+        }
+      }
+
+      send(res, 401, {
+        code: 'TOKEN_INVALID',
+        message: '令牌无效'
+      })
     }
   },
   {
