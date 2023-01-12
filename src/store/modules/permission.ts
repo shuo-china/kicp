@@ -1,26 +1,25 @@
-import { defineStore } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
+import { defineStore } from 'pinia'
 import router, { asyncRouterList } from '@/router'
 import { store } from '@/store'
 
-function filterPermissionsRouters(routes: Array<RouteRecordRaw>, roles: Array<unknown>) {
+function filterPermissionsRouters(routes: Array<RouteRecordRaw>, roles: Array<string>) {
   const res = []
   const removeRoutes = []
+
   routes.forEach(route => {
-    const children = []
-    route.children?.forEach(childRouter => {
-      const roleCode = childRouter.meta?.roleCode || childRouter.name
-      if (roles.indexOf(roleCode) !== -1) {
-        children.push(childRouter)
+    const accessRoles = route.meta?.roles
+    if (accessRoles) {
+      if (roles.some(role => accessRoles.includes(role))) {
+        res.push(route)
       } else {
-        removeRoutes.push(childRouter)
+        removeRoutes.push(route)
       }
-    })
-    if (children.length > 0) {
-      route.children = children
+    } else {
       res.push(route)
     }
   })
+
   return { accessedRouters: res, removeRoutes }
 }
 
@@ -31,18 +30,15 @@ export const usePermissionStore = defineStore('permission', {
     removeRoutes: []
   }),
   actions: {
-    async initRoutes(roles: Array<unknown>) {
+    async initRoutes(roles: Array<string>) {
       let accessedRouters = []
 
       let removeRoutes = []
-      // special token
-      if (roles.includes('all')) {
-        accessedRouters = asyncRouterList
-      } else {
-        const res = filterPermissionsRouters(asyncRouterList, roles)
-        accessedRouters = res.accessedRouters
-        removeRoutes = res.removeRoutes
-      }
+
+      const res = filterPermissionsRouters(asyncRouterList, roles)
+
+      accessedRouters = res.accessedRouters
+      removeRoutes = res.removeRoutes
 
       this.routers = accessedRouters
       this.removeRoutes = removeRoutes
@@ -57,6 +53,7 @@ export const usePermissionStore = defineStore('permission', {
       this.removeRoutes.forEach((item: RouteRecordRaw) => {
         router.addRoute(item)
       })
+      this.$reset()
     }
   }
 })

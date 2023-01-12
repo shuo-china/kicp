@@ -1,21 +1,26 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { useRoute, createRouter, createWebHistory } from 'vue-router'
 import uniq from 'lodash/uniq'
+import Common from './modules/common'
+import Visitor from './modules/visitor'
+import Passage from './modules/passage'
+import Traffic from './modules/traffic'
 
 const env = import.meta.env.MODE || 'development'
 
 // 自动导入modules文件夹下所有ts文件
-const modules = import.meta.globEager('./modules/**/*.ts')
+// const modules = import.meta.globEager('./modules/**/*.ts')
+// console.log(modules)
 
 // 路由暂存
-const routeModuleList: Array<RouteRecordRaw> = []
+const routeModuleList: Array<RouteRecordRaw> = [...Common, ...Visitor, ...Passage, ...Traffic]
 
-Object.keys(modules).forEach(key => {
-  // @ts-ignore
-  const mod = modules[key].default || {}
-  const modList = Array.isArray(mod) ? [...mod] : [mod]
-  routeModuleList.push(...modList)
-})
+// Object.keys(modules).forEach(key => {
+//   // @ts-ignore
+//   const mod = modules[key].default || {}
+//   const modList = Array.isArray(mod) ? [...mod] : [mod]
+//   routeModuleList.push(...modList)
+// })
 
 // 关于单层路由，meta 中设置 { single: true } 即可为单层路由，{ hidden: true } 即可在侧边栏隐藏该路由
 
@@ -31,12 +36,12 @@ const defaultRouterList: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    redirect: '/dashboard/base'
+    redirect: '/common'
   },
   {
     path: '/:w+',
     name: '404Page',
-    redirect: '/result/404'
+    component: () => import('@/pages/result/404/index.vue')
   }
 ]
 

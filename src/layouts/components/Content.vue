@@ -1,7 +1,7 @@
 <template>
-  <router-view v-if="!isRefreshing" v-slot="{ Component }">
+  <router-view v-slot="{ Component }">
     <transition name="fade" mode="out-in">
-      <keep-alive :include="aliveViews">
+      <keep-alive>
         <component :is="Component" />
       </keep-alive>
     </transition>
@@ -10,9 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { ComputedRef } from 'vue'
-import { useTabsRouterStore } from '@/store'
 import FramePage from '@/layouts/frame/index.vue'
 
 // <suspense>标签属于实验性功能，请谨慎使用
@@ -26,19 +23,6 @@ import FramePage from '@/layouts/frame/index.vue'
 //   const router = useRouter();
 //   return router.currentRoute.value.fullPath;
 // });
-
-const aliveViews = computed(() => {
-  const tabsRouterStore = useTabsRouterStore()
-  const { tabRouters } = tabsRouterStore
-
-  return tabRouters.filter(route => route.isAlive).map(route => route.name)
-}) as ComputedRef<string[]>
-
-const isRefreshing = computed(() => {
-  const tabsRouterStore = useTabsRouterStore()
-  const { refreshing } = tabsRouterStore
-  return refreshing
-})
 </script>
 <style lang="less" scoped>
 .fade-leave-active,

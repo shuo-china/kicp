@@ -1,15 +1,12 @@
 import { defineStore } from 'pinia'
-import keys from 'lodash/keys'
 import type { TColorSeries } from '@/config/color'
-import { COLOR_TOKEN, LIGHT_CHART_COLORS, DARK_CHART_COLORS } from '@/config/color'
+import { COLOR_TOKEN } from '@/config/color'
 import STYLE_CONFIG from '@/config/style'
 import { store } from '@/store'
 
 const state = {
   ...STYLE_CONFIG,
-  showSettingPanel: false,
-  colorList: COLOR_TOKEN,
-  chartColors: LIGHT_CHART_COLORS
+  colorList: COLOR_TOKEN
 }
 
 export type TState = typeof state
@@ -46,8 +43,6 @@ export const useSettingStore = defineStore('setting', {
       const isDarkMode = theme === 'dark'
 
       document.documentElement.setAttribute('theme-mode', isDarkMode ? 'dark' : '')
-
-      this.chartColors = isDarkMode ? DARK_CHART_COLORS : LIGHT_CHART_COLORS
     },
     changeBrandTheme(brandTheme: string) {
       document.documentElement.setAttribute('theme-color', brandTheme)
@@ -68,9 +63,6 @@ export const useSettingStore = defineStore('setting', {
         }
       }
     }
-  },
-  persist: {
-    paths: [...keys(STYLE_CONFIG), 'colorList', 'chartColors']
   }
 })
 

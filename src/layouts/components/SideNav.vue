@@ -27,7 +27,7 @@ import pgk from '../../../package.json'
 import type { MenuRoute } from '@/types/interface'
 import { getActive, getRoutesExpanded } from '@/router'
 
-import AssetLogo from '@/assets/assets-t-logo.svg?component'
+import AssetLogo from '@/assets/assets-logo.svg'
 import AssetLogoFull from '@/assets/assets-logo-full.svg?component'
 import MenuContent from './MenuContent.vue'
 
@@ -115,7 +115,7 @@ onMounted(() => {
 })
 
 const goHome = () => {
-  router.push('/dashboard/base')
+  router.push('/')
 }
 
 const getLogo = () => {

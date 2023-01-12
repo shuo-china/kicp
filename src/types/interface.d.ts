@@ -45,8 +45,3 @@ export interface TRouterInfo {
   isHome?: boolean
   meta?: any
 }
-
-export interface TTabRouterType {
-  isRefreshing: boolean
-  tabRouterList: Array<TRouterInfo>
-}

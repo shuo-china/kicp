@@ -2,14 +2,13 @@
   <div :class="layoutCls">
     <t-head-menu :class="menuCls" :theme="theme" expand-type="popup" :value="active">
       <template #logo>
-        <span v-if="showLogo" class="header-logo-container" @click="handleNav('/dashboard/base')">
+        <span v-if="showLogo" class="header-logo-container" @click="handleNav('/')">
           <logo-full class="t-logo" />
         </span>
         <div v-else class="header-operate-left">
           <t-button theme="default" shape="square" variant="text" @click="changeCollapsed">
             <t-icon class="collapsed-icon" name="view-list" />
           </t-button>
-          <search :layout="layout" />
         </div>
       </template>
       <template v-if="layout !== 'side'" #default>
@@ -17,20 +16,9 @@
       </template>
       <template #operations>
         <div class="operations-container">
-          <!-- 搜索框 -->
-          <search v-if="layout !== 'side'" :layout="layout" />
-
-          <!-- 全局通知 -->
-          <notice />
-
           <t-tooltip placement="bottom" content="代码仓库">
             <t-button theme="default" shape="square" variant="text" @click="navToGitHub">
               <t-icon name="logo-github" />
-            </t-button>
-          </t-tooltip>
-          <t-tooltip placement="bottom" content="帮助文档">
-            <t-button theme="default" shape="square" variant="text" @click="navToHelper">
-              <t-icon name="help-circle" />
             </t-button>
           </t-tooltip>
           <t-dropdown :min-column-width="135" trigger="click">
@@ -52,11 +40,6 @@
               <template #suffix><t-icon name="chevron-down" /></template>
             </t-button>
           </t-dropdown>
-          <t-tooltip placement="bottom" content="系统设置">
-            <t-button theme="default" shape="square" variant="text" @click="toggleSettingPanel">
-              <t-icon name="setting" />
-            </t-button>
-          </t-tooltip>
         </div>
       </template>
     </t-head-menu>
@@ -72,9 +55,6 @@ import { getActive } from '@/router'
 import { prefix } from '@/config/global'
 import LogoFull from '@/assets/assets-logo-full.svg?component'
 import type { MenuRoute } from '@/types/interface'
-
-import Notice from './Notice.vue'
-import Search from './Search.vue'
 import MenuContent from './MenuContent.vue'
 
 const props = defineProps({
@@ -110,12 +90,6 @@ const props = defineProps({
 
 const router = useRouter()
 const settingStore = useSettingStore()
-
-const toggleSettingPanel = () => {
-  settingStore.updateConfig({
-    showSettingPanel: true
-  })
-}
 
 const active = computed(() => getActive())
 
@@ -153,10 +127,6 @@ const handleLogout = () => {
 const navToGitHub = () => {
   window.open('https://github.com/tencent/tdesign-vue-next-starter')
 }
-
-const navToHelper = () => {
-  window.open('http://tdesign.tencent.com/starter/docs/get-started')
-}
 </script>
 <style lang="less" scoped>
 .@{starter-prefix}-header {
@@ -188,7 +158,8 @@ const navToHelper = () => {
 
   :deep(.t-menu__item) {
     min-width: unset;
-    padding: 0px 16px;
+    padding: 0px 24px;
+    font-size: 15px;
   }
 }
 
@@ -231,7 +202,7 @@ const navToHelper = () => {
 
 .header-logo-container {
   width: 184px;
-  height: 26px;
+  height: 30px;
   display: flex;
   margin-left: 24px;
   color: var(--td-text-color-primary);

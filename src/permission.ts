@@ -1,7 +1,5 @@
-import { MessagePlugin } from 'tdesign-vue-next'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-
 import { getPermissionStore, getUserStore } from '@/store'
 import router from '@/router'
 
@@ -14,41 +12,25 @@ router.beforeEach(async (to, from, next) => {
   const permissionStore = getPermissionStore()
   const { whiteListRouters } = permissionStore
 
-  const { token } = userStore
-  if (token) {
-    if (to.path === '/login') {
-      next()
-      return
-    }
-
-    const { roles } = userStore
-
-    if (roles && roles.length > 0) {
+  if (userStore.token) {
+    if (to.path === '/login' || userStore.hasUserInfo) {
       next()
     } else {
       try {
-        await userStore.getUserInfo()
-
-        const { roles } = userStore
-
+        const { roles } = await userStore.getUserInfo()
         await permissionStore.initRoutes(roles)
 
-        if (router.hasRoute(to.name)) {
-          next()
-        } else {
-          next(`/`)
-        }
+        next(to.path)
       } catch (error) {
-        MessagePlugin.error(error)
         next({
           path: '/login',
           query: { redirect: encodeURIComponent(to.fullPath) }
         })
-        NProgress.done()
       }
     }
   } else {
     /* white list router */
+    // eslint-disable-next-line no-lonely-if
     if (whiteListRouters.indexOf(to.path) !== -1) {
       next()
     } else {
@@ -57,7 +39,6 @@ router.beforeEach(async (to, from, next) => {
         query: { redirect: encodeURIComponent(to.fullPath) }
       })
     }
-    NProgress.done()
   }
 })
 
@@ -69,5 +50,6 @@ router.afterEach(to => {
     userStore.logout()
     permissionStore.restore()
   }
+
   NProgress.done()
 })

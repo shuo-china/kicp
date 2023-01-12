@@ -1,11 +1,13 @@
 // axios配置  可自行根据项目进行更改，只需更改该文件即可，其他文件可以不动
 import isString from 'lodash/isString'
 import merge from 'lodash/merge'
+import { MessagePlugin } from 'tdesign-vue-next'
+import router from '@/router'
 import type { AxiosTransform, CreateAxiosOptions } from './AxiosTransform'
 import { VAxios } from './Axios'
 import proxy from '@/config/proxy'
 import { joinTimestamp, formatRequestDate, setObjToUrlParams } from './utils'
-import { TOKEN_NAME } from '@/config/global'
+import { useUserStore } from '@/store'
 
 const env = import.meta.env.MODE || 'development'
 
@@ -110,7 +112,9 @@ const transform: AxiosTransform = {
   // 请求拦截器处理
   requestInterceptors: (config, options) => {
     // 请求之前处理config
-    const token = localStorage.getItem(TOKEN_NAME)
+    const userStore = useUserStore()
+    const { token } = userStore
+
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
       ;(config as Recordable).headers.Authorization = options.authenticationScheme
@@ -127,8 +131,24 @@ const transform: AxiosTransform = {
 
   // 响应错误处理
   responseInterceptorsCatch: (error: any) => {
-    const { config } = error
-    if (!config || !config.requestOptions.retry) return Promise.reject(error)
+    const { config, response, message } = error
+    if (!config || !config.requestOptions.retry) {
+      if (response?.data) {
+        if (response.status === 401 && response.data?.code === 'TOKEN_INVALID') {
+          router.push({
+            path: '/login',
+            query: { redirect: encodeURIComponent(router.currentRoute.value.fullPath) }
+          })
+        }
+
+        const errorMsg = response.data?.message || 'Error'
+        MessagePlugin.error(errorMsg)
+        return Promise.reject(new Error(errorMsg))
+      }
+
+      MessagePlugin.error(message)
+      return Promise.reject(error)
+    }
 
     config.retryCount = config.retryCount || 0
 
@@ -152,7 +172,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
       <CreateAxiosOptions>{
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
         // 例如: authenticationScheme: 'Bearer'
-        authenticationScheme: '',
+        authenticationScheme: 'Bearer',
         // 超时
         timeout: 10 * 1000,
         // 携带Cookie
@@ -174,22 +194,22 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           // 是否返回原生响应头 比如：需要获取响应头时使用该属性
           isReturnNativeResponse: false,
           // 需要对返回数据进行处理
-          isTransformResponse: true,
+          isTransformResponse: false,
           // post请求的时候添加参数到url
           joinParamsToUrl: false,
           // 格式化提交参数时间
           formatDate: true,
-          // 是否加入时间戳
-          joinTime: true,
+          // 是否加入时间戳 例如?t=xxxxx
+          joinTime: false,
           // 忽略重复请求
           ignoreRepeatRequest: true,
           // 是否携带token
-          withToken: true,
+          withToken: true
           // 重试
-          retry: {
-            count: 3,
-            delay: 1000
-          }
+          // retry: {
+          //   count: 3,
+          //   delay: 1000
+          // }
         }
       },
       opt || {}

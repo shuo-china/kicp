@@ -6,14 +6,14 @@ const users = {
     token: 'admin-token',
     info: {
       nickname: 'Super Admin',
-      roles: ['admin']
+      roles: ['visitor', 'passage', 'traffic']
     }
   },
   normal: {
     token: 'normal-token',
     info: {
       nickname: 'Normal User',
-      roles: ['normal']
+      roles: ['visitor']
     }
   }
 }
